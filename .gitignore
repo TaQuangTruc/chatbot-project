@@ -1,0 +1,19 @@
+# Môi trường ảo
+venv/
+.env
+
+# Tệp hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Tệp Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Tệp log & debug
+*.log
+
+# Tệp phụ trợ của VS Code
+.vscode/

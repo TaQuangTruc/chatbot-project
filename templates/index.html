@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+      .chat-container {
+        width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .chat-box {
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .input-box {
+        display: flex;
+      }
+      input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      button {
+        padding: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-box" id="chat-box"></div>
+      <div class="input-box">
+        <input type="text" id="user-input" placeholder="Nhập câu hỏi..." />
+        <button onclick="sendMessage()">Gửi</button>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("user-input")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+        });
+
+      function sendMessage() {
+        let inputField = document.getElementById("user-input");
+        let chatBox = document.getElementById("chat-box");
+        let userMessage = inputField.value.trim();
+        if (!userMessage) return;
+
+        chatBox.innerHTML += `<div><strong>Bạn:</strong> ${userMessage}</div>`;
+        inputField.value = "";
+
+        fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMessage }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            chatBox.innerHTML += `<div><strong>Bot:</strong> ${data.response}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+          })
+          .catch((error) => console.error("Lỗi:", error));
+      }
+    </script>
+  </body>
+</html>
