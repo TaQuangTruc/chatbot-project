@@ -7,6 +7,9 @@ app = Flask(__name__)
 # Đặt API Key từ biến môi trường
 os.environ["TOGETHER_API_KEY"] = "5d014c761147a739fe900d696ae980ffe8e063fe2908632ef2fe3609b20dd35d"
 
+MAXTOKEN = 500 # Liên quan tới số từ trả lời trong 1 câu hỏi 
+
+
 # Dữ liệu nội bộ của công ty
 company_data = {
     "hỗ trợ làm việc từ xa": "Có, công ty hỗ trợ tối đa 2 ngày/tuần.",
@@ -208,7 +211,7 @@ Trả lời:"""
         response = together.Complete.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo",
             prompt=full_prompt,
-            max_tokens=500,  # Giới hạn câu trả lời ngắn gọn
+            max_tokens=MAXTOKEN,  # Giới hạn câu trả lời ngắn gọn
             stop=["Câu hỏi:", "Trả lời:"],  # Ngăn bot sinh câu hỏi tiếp theo
         )
 
